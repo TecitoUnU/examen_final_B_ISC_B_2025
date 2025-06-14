@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Final</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <script src="https://unpkg.com/dexie@3/dist/dexie.js"></script>
+</head>
+<body>
+    <h1>Miguel Angel Lool Ortiz</h1>
+    <h2><a href="https://github.com/TecitoUnU?tab=repositories">Repositorios</a></h2>
+    <a href="https://github.com/TecitoUnU">Usuario Github</a>
+
+<center>
+<div class="form-container">
+	<p class="title">Guardar datos</p>
+	<form id="formu" class="form">
+		<div class="input-group">
+			<label for="username">Nombre</label>
+			<input type="text" name="nombr" id="nombre" placeholder="">
+		</div>
+		<div class="input-group">
+			<label for="password">Apellidos</label>
+			<input type="text" name="apellidos" id="apellidos" placeholder="">
+		</div>
+        <div class="input-group">
+			<label for="password">Mes de nacimiento</label>
+			<input type="text" name="mes" id="mes" placeholder="">
+		</div>
+        <div class="input-group">
+			<label for="password">Año de nacimiento</label>
+			<input type="text" name="ano" id="ano" placeholder="">
+		</div>
+		<button type="button" class="sign" onclick="guardar()">Guardar datos</button>
+        <p id="resultado"></p>
+	</form>
+	</div>
+    
+</div>
+</center>
+
+
+<script>
+
+  const db = new Dexie("datos");
+    db.version(1).stores({
+      registros: "++id, ano, mes, bisiesto, paridad"
+    });
+
+async function guardar() {
+ 
+        const ano = parseInt(document.getElementById("ano").value);
+        const mes = parseInt(document.getElementById("mes").value);
+        const resultado = document.getElementById("resultado");
+
+
+        let bisiesto = (ano % 4 === 0 && ano % 100 !== 0)|| (ano % 400 === 0);
+        let paridad = mes % 2 === 0 ? "par" : "impar";
+        resultado.textContent = `El año ${ano} ${bisiesto ? "es" : "no es"} bisiesto y el mes ${mes} es ${paridad}.`;
+
+        await db.registros.add({
+        ano: ano,
+        mes: mes,
+        bisiesto: bisiesto,
+        paridad: paridad
+        });
+}
+
+ 
+
+</script>
+
+<style>
+    
+.form-container {
+  width: 320px;
+  border-radius: 0.75rem;
+  background-color: rgba(17, 24, 39, 1);
+  padding: 2rem;
+  color: rgba(243, 244, 246, 1);
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+.form {
+  margin-top: 1.5rem;
+}
+
+.input-group {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.input-group label {
+  display: block;
+  color: rgba(156, 163, 175, 1);
+  margin-bottom: 4px;
+}
+
+.input-group input {
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(55, 65, 81, 1);
+  outline: 0;
+  background-color: rgba(17, 24, 39, 1);
+  padding: 0.75rem 1rem;
+  color: rgba(243, 244, 246, 1);
+}
+
+.input-group input:focus {
+  border-color: rgba(167, 139, 250);
+}
+
+.forgot {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgba(156, 163, 175,1);
+  margin: 8px 0 14px 0;
+}
+
+.forgot a,.signup a {
+  color: rgba(243, 244, 246, 1);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot a:hover, .signup a:hover {
+  text-decoration: underline rgba(167, 139, 250, 1);
+}
+
+.sign {
+  display: block;
+  width: 100%;
+  background-color: rgba(167, 139, 250, 1);
+  padding: 0.75rem;
+  text-align: center;
+  color: rgba(17, 24, 39, 1);
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+}
+
+.signup {
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgba(156, 163, 175, 1);
+}
+
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+</body>
+</html>
